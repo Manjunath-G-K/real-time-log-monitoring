@@ -11,9 +11,10 @@ This project collects logs from multiple services, processes them securely in me
 and streams them live to a dashboard without permanent storage.
 
 ## Key Goals
-- Real-time log streaming
-- Basic sensitive data masking
+- Secure log ingestion with basic encryption
+- Clean backend layering (controller-service separation)
 - Minimal data retention
+
 
 ## Tech Stack (Planned)
 - Backend: Java (Spring Boot)
@@ -24,3 +25,4 @@ and streams them live to a dashboard without permanent storage.
 ## Project Status
 🚧 Day 1: Project setup and planning
 🚧  Day 2: Implemented backend log ingestion API using Spring Boot
+🚧 Day 3: Added service layer and basic encryption for logs
