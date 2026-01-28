@@ -16,7 +16,6 @@ public class LogService {
             Pattern.compile("\\b\\d{10}\\b");
 
     public String processLog(String service, String message) {
-
         String maskedMessage = maskSensitiveData(message);
         String encryptedMessage = encrypt(maskedMessage);
 
@@ -57,7 +56,6 @@ public class LogService {
         matcher.appendTail(result);
         return result.toString();
     }
-
 
     private String encrypt(String message) {
         return Base64.getEncoder().encodeToString(message.getBytes());
