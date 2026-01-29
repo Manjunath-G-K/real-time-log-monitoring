@@ -6,6 +6,9 @@ import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ingestion_service.store.InMemoryLogStore;
+
+
 @Service
 public class LogService {
 
@@ -15,9 +18,18 @@ public class LogService {
     private static final Pattern PHONE_PATTERN =
             Pattern.compile("\\b\\d{10}\\b");
 
+    private final InMemoryLogStore logStore;
+
+    public LogService(InMemoryLogStore logStore) {
+        this.logStore = logStore;
+    }
+
+
     public String processLog(String service, String message) {
         String maskedMessage = maskSensitiveData(message);
         String encryptedMessage = encrypt(maskedMessage);
+
+        logStore.addLog(encryptedMessage);
 
         System.out.println("Service: " + service);
         System.out.println("Encrypted Message: " + encryptedMessage);
