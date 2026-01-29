@@ -12,8 +12,9 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 
 ## Key Goals
 - Secure log ingestion with encryption and sensitive data masking
+- In-memory log storage with sliding window
 - Clean backend layering (controller-service separation)
-- Minimal data retention
+
 
 ## Tech Stack
 - Backend: Java (Spring Boot)
@@ -26,3 +27,4 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 ✅ Day 2: Implemented backend log ingestion API using Spring Boot  
 ✅ Day 3: Added service layer and basic encryption for logs  
 ✅ Day 4: Implemented email and phone masking for sensitive data
+✅ Day 5: Added in-memory log storage with sliding window support
