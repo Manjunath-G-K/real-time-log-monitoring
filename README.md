@@ -28,3 +28,5 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 ✅ Day 3: Added service layer and basic encryption for logs  
 ✅ Day 4: Implemented email and phone masking for sensitive data
 ✅ Day 5: Added in-memory log storage with sliding window support
+✅ Day 6: Implemented real-time log streaming with WebSockets
+
