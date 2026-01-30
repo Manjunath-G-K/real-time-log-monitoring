@@ -14,6 +14,7 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 - Secure log ingestion with encryption and sensitive data masking
 - In-memory log storage with sliding window
 - Clean backend layering (controller-service separation)
+- Real-time log streaming using WebSockets
 
 
 ## Tech Stack
