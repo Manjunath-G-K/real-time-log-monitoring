@@ -1,5 +1,6 @@
 package com.ingestion_service.service;
 
+import com.ingestion_service.websocket.LogWebSocketHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -20,9 +21,16 @@ public class LogService {
 
     private final InMemoryLogStore logStore;
 
-    public LogService(InMemoryLogStore logStore) {
+    private final LogWebSocketHandler webSocketHandler;
+
+
+
+
+    public LogService(InMemoryLogStore logStore, LogWebSocketHandler webSocketHandler) {
         this.logStore = logStore;
+        this.webSocketHandler = webSocketHandler;
     }
+
 
 
     public String processLog(String service, String message) {
@@ -30,6 +38,8 @@ public class LogService {
         String encryptedMessage = encrypt(maskedMessage);
 
         logStore.addLog(encryptedMessage);
+
+        webSocketHandler.broadcast(encryptedMessage);
 
         System.out.println("Service: " + service);
         System.out.println("Encrypted Message: " + encryptedMessage);
@@ -72,4 +82,6 @@ public class LogService {
     private String encrypt(String message) {
         return Base64.getEncoder().encodeToString(message.getBytes());
     }
+
+
 }
