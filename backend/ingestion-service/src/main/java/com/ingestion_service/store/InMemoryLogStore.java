@@ -21,4 +21,9 @@ public class InMemoryLogStore {
     public synchronized List<String> getRecentLogs() {
         return List.copyOf(logs);
     }
+
+    public synchronized void clear() {
+        logs.clear();
+    }
+
 }
