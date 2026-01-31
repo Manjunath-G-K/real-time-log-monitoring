@@ -15,6 +15,8 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 - In-memory log storage with sliding window
 - Clean backend layering (controller-service separation)
 - Real-time log streaming using WebSockets
+- Panic mode with encryption key rotation and log invalidation
+
 
 
 ## Tech Stack
@@ -30,4 +32,6 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 ✅ Day 4: Implemented email and phone masking for sensitive data
 ✅ Day 5: Added in-memory log storage with sliding window support
 ✅ Day 6: Implemented real-time log streaming with WebSockets
+✅ Day 7: Implemented panic mode with key rotation and emergency log invalidation
+
 
