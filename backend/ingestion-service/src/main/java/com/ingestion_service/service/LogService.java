@@ -8,6 +8,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ingestion_service.store.InMemoryLogStore;
+import com.ingestion_service.security.EncryptionKeyManager;
+
 
 
 @Service
@@ -26,10 +28,17 @@ public class LogService {
 
 
 
-    public LogService(InMemoryLogStore logStore, LogWebSocketHandler webSocketHandler) {
+
+    private final EncryptionKeyManager keyManager;
+
+    public LogService(InMemoryLogStore logStore,
+                      LogWebSocketHandler webSocketHandler,
+                      EncryptionKeyManager keyManager) {
         this.logStore = logStore;
         this.webSocketHandler = webSocketHandler;
+        this.keyManager = keyManager;
     }
+
 
 
 
@@ -79,9 +88,23 @@ public class LogService {
         return result.toString();
     }
 
+//    private String encrypt(String message) {
+//        return Base64.getEncoder().encodeToString(message.getBytes());
+//    }
+
     private String encrypt(String message) {
-        return Base64.getEncoder().encodeToString(message.getBytes());
+        String key = keyManager.getKey();
+        String combined = key + ":" + message;
+        return Base64.getEncoder().encodeToString(combined.getBytes());
     }
+
+
+    public void panic() {
+        keyManager.rotateKey();
+        logStore.clear();
+        webSocketHandler.broadcast("🚨 PANIC MODE ACTIVATED: Logs invalidated");
+    }
+
 
 
 }

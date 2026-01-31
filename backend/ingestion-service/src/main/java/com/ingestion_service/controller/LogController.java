@@ -38,4 +38,11 @@ public class LogController {
         return logStore.getRecentLogs();
     }
 
+    @PostMapping("/panic")
+    public String panicMode() {
+        logService.panic();
+        return "PANIC MODE ACTIVATED";
+    }
+
+
 }
