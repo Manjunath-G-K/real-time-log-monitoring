@@ -1,5 +1,6 @@
 package com.ingestion_service.service;
 
+import com.ingestion_service.store.MetricsStore;
 import com.ingestion_service.websocket.LogWebSocketHandler;
 import org.springframework.stereotype.Service;
 
@@ -25,30 +26,40 @@ public class LogService {
 
     private final LogWebSocketHandler webSocketHandler;
 
-
-
-
-
     private final EncryptionKeyManager keyManager;
+
+    private final MetricsStore metricsStore;
+
 
     public LogService(InMemoryLogStore logStore,
                       LogWebSocketHandler webSocketHandler,
-                      EncryptionKeyManager keyManager) {
+                      EncryptionKeyManager keyManager,
+                         MetricsStore metricsStore) {
         this.logStore = logStore;
         this.webSocketHandler = webSocketHandler;
         this.keyManager = keyManager;
+        this.metricsStore = metricsStore;
     }
 
 
 
 
     public String processLog(String service, String message) {
+
+        if (message == null || message.isBlank()) {
+            return "Ignored empty log";
+        }
+
         String maskedMessage = maskSensitiveData(message);
         String encryptedMessage = encrypt(maskedMessage);
 
         logStore.addLog(encryptedMessage);
 
         webSocketHandler.broadcast(encryptedMessage);
+
+
+        metricsStore.recordLog();
+
 
         System.out.println("Service: " + service);
         System.out.println("Encrypted Message: " + encryptedMessage);
@@ -102,8 +113,11 @@ public class LogService {
     public void panic() {
         keyManager.rotateKey();
         logStore.clear();
+        metricsStore.reset();
         webSocketHandler.broadcast("🚨 PANIC MODE ACTIVATED: Logs invalidated");
     }
+
+
 
 
 
