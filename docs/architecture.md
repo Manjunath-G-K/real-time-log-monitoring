@@ -10,13 +10,16 @@
 2. Backend processes logs using a service layer
 3. Log messages are encrypted and handled in memory
 
-## Current Implementation (Day 7)
+## Current Implementation (Day 8)
 - REST-based log ingestion endpoint
 - Service-layer processing for logs
 - Basic encryption applied before handling logs
 - Logs are stored temporarily in an in-memory sliding window (last 100 logs)
 -  Logs are broadcast to connected clients in real time using WebSockets
 - Panic mode rotates encryption keys, clears in-memory logs, and alerts connected clients
+- Health and metrics endpoints provide system observability
+- Metrics reset automatically during panic mode
+
 
 
 ## Planned Enhancements
