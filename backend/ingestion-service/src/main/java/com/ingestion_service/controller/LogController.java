@@ -8,6 +8,8 @@ import com.ingestion_service.store.MetricsStore;
 import org.springframework.web.bind.annotation.*;
 
 import com.ingestion_service.store.InMemoryLogStore;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,11 +60,13 @@ public class LogController {
 
     @GetMapping("/metrics")
     public Map<String, Object> metrics() {
-        return Map.of(
-                "totalLogs", metricsStore.getTotalLogs(),
-                "lastLogTime", metricsStore.getLastLogTime()
-        );
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalLogs", metricsStore.getTotalLogs());
+        response.put("lastLogTime", metricsStore.getLastLogTime());
+        return response;
     }
+
+
 
 
 
