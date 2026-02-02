@@ -99,9 +99,7 @@ public class LogService {
         return result.toString();
     }
 
-//    private String encrypt(String message) {
-//        return Base64.getEncoder().encodeToString(message.getBytes());
-//    }
+
 
     private String encrypt(String message) {
         String key = keyManager.getKey();
