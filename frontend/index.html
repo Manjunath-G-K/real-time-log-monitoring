@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Real-Time Log Monitoring</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+    <h1>🛰️ Real-Time Log Monitoring</h1>
+
+    <div class="controls">
+        <button id="sendLogBtn">Send Test Log</button>
+        <button id="panicBtn" class="danger">Panic Mode</button>
+    </div>
+
+    <div class="metrics">
+        <div class="card">
+            <h3>Total Logs</h3>
+            <p id="totalLogs">0</p>
+        </div>
+        <div class="card">
+            <h3>Last Log Time</h3>
+            <p id="lastLogTime">-</p>
+        </div>
+    </div>
+
+    <div class="logs">
+        <h3>Live Logs</h3>
+        <pre id="logStream"></pre>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
