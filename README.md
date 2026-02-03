@@ -25,14 +25,23 @@ and processes them securely in memory. Real-time streaming to a dashboard is pla
 - Communication: REST (WebSockets planned)
 - Storage: In-memory
 
+
 ## Project Status
 ✅ Day 1: Project setup and planning  
 ✅ Day 2: Implemented backend log ingestion API using Spring Boot  
 ✅ Day 3: Added service layer and basic encryption for logs  
+<<<<<<< HEAD
 ✅ Day 4: Implemented email and phone masking for sensitive data
 ✅ Day 5: Added in-memory log storage with sliding window support
 ✅ Day 6: Implemented real-time log streaming with WebSockets
 ✅ Day 7: Implemented panic mode with key rotation and emergency log invalidation
 ✅ Day 8: Added health, metrics, and observability endpoints
 
+=======
+✅ Day 4: Implemented email and phone masking for sensitive data  
+✅ Day 5: Added in-memory log storage with sliding window  
+✅ Day 6: Implemented real-time log streaming with WebSockets  
+✅ Day 7: Added panic mode with key rotation and log invalidation  
+✅ Day 8: Added health, metrics, and observability endpoints
+>>>>>>> 2526bd0 (Complete Day 8: health, metrics, validation, and observability)
 
