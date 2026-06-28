@@ -1,5 +1,9 @@
 # 🔐 Real-Time Log Monitoring System
+A **full-stack, real-time log ingestion and monitoring system** built with **Spring Boot**, **WebSockets**, and a lightweight **HTML/CSS/JavaScript** dashboard.
 
+The system securely ingests logs, **masks sensitive data**, **encrypts logs in memory**, streams them live to a dashboard, and provides an emergency **panic mode** to instantly invalidate logs.
+
+This project focuses on **real-world backend concepts** such as observability, security, real-time systems, and incident response.
 
 ---
 
