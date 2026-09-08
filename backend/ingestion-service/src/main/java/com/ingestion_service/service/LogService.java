@@ -2,6 +2,8 @@ package com.ingestion_service.service;
 
 import com.ingestion_service.store.MetricsStore;
 import com.ingestion_service.websocket.LogWebSocketHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -15,6 +17,8 @@ import com.ingestion_service.security.EncryptionKeyManager;
 
 @Service
 public class LogService {
+
+    private static final Logger log = LoggerFactory.getLogger(LogService.class);
 
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
@@ -47,6 +51,7 @@ public class LogService {
     public String processLog(String service, String message) {
 
         if (message == null || message.isBlank()) {
+            log.debug("Ignored empty log from service={}", service);
             return "Ignored empty log";
         }
 
@@ -60,9 +65,7 @@ public class LogService {
 
         metricsStore.recordLog();
 
-
-        System.out.println("Service: " + service);
-        System.out.println("Encrypted Message: " + encryptedMessage);
+        log.info("Processed log: service={}", service);
 
         return encryptedMessage;
     }
@@ -114,9 +117,5 @@ public class LogService {
         metricsStore.reset();
         webSocketHandler.broadcast("🚨 PANIC MODE ACTIVATED: Logs invalidated");
     }
-
-
-
-
 
 }
