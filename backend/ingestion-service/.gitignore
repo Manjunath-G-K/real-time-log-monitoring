@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### H2 database files (dev persistence, never shared/committed) ###
+data/
+
 ### STS ###
 .apt_generated
 .classpath
