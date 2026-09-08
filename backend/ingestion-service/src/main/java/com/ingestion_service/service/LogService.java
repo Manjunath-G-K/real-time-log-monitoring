@@ -1,19 +1,17 @@
 package com.ingestion_service.service;
 
+import com.ingestion_service.security.CryptoService;
+import com.ingestion_service.security.EncryptionKeyManager;
 import com.ingestion_service.store.MetricsStore;
 import com.ingestion_service.websocket.LogWebSocketHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ingestion_service.store.InMemoryLogStore;
-import com.ingestion_service.security.EncryptionKeyManager;
-
-
 
 @Service
 public class LogService {
@@ -32,16 +30,20 @@ public class LogService {
 
     private final EncryptionKeyManager keyManager;
 
+    private final CryptoService cryptoService;
+
     private final MetricsStore metricsStore;
 
 
     public LogService(InMemoryLogStore logStore,
                       LogWebSocketHandler webSocketHandler,
                       EncryptionKeyManager keyManager,
-                         MetricsStore metricsStore) {
+                      CryptoService cryptoService,
+                      MetricsStore metricsStore) {
         this.logStore = logStore;
         this.webSocketHandler = webSocketHandler;
         this.keyManager = keyManager;
+        this.cryptoService = cryptoService;
         this.metricsStore = metricsStore;
     }
 
@@ -56,7 +58,7 @@ public class LogService {
         }
 
         String maskedMessage = maskSensitiveData(message);
-        String encryptedMessage = encrypt(maskedMessage);
+        String encryptedMessage = cryptoService.encrypt(maskedMessage);
 
         logStore.addLog(encryptedMessage);
 
@@ -65,7 +67,11 @@ public class LogService {
 
         metricsStore.recordLog();
 
-        log.info("Processed log: service={}", service);
+        // Deliberately never log the masked/plaintext message or the
+        // ciphertext itself here — that would defeat the point of masking
+        // and encrypting it in the first place. Only log metadata useful
+        // for tracing an ingestion problem.
+        log.info("Processed log: service={}, keyVersion={}", service, keyManager.getCurrentVersion());
 
         return encryptedMessage;
     }
@@ -102,12 +108,17 @@ public class LogService {
         return result.toString();
     }
 
-
-
-    private String encrypt(String message) {
-        String key = keyManager.getKey();
-        String combined = key + ":" + message;
-        return Base64.getEncoder().encodeToString(combined.getBytes());
+    /**
+     * Decrypts a previously encrypted, stored log entry.
+     *
+     * Not yet wired to any REST endpoint on purpose: until there's an
+     * auth boundary (step 5 on the roadmap) distinguishing viewers from
+     * anonymous callers, exposing "decrypt everything" over HTTP would
+     * defeat the purpose of encrypting logs at all. This method exists
+     * now so it can be unit-tested and then wired in once auth exists.
+     */
+    public String decrypt(String encryptedMessage) {
+        return cryptoService.decrypt(encryptedMessage);
     }
 
 
@@ -116,6 +127,7 @@ public class LogService {
         logStore.clear();
         metricsStore.reset();
         webSocketHandler.broadcast("🚨 PANIC MODE ACTIVATED: Logs invalidated");
+        log.warn("Panic mode activated: encryption key rotated, in-memory logs and metrics cleared");
     }
 
 }
